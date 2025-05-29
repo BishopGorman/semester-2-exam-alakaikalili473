@@ -34,7 +34,7 @@ public class GameManagerX : MonoBehaviour
         StartCoroutine(SpawnTarget());
         StartCoroutine(Timer());
         score = 0;
-        time = 11;
+        time = 61;
         UpdateScore(0);
         titleScreen.SetActive(false);
         UpdateTime();
