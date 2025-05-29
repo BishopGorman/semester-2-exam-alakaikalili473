@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Threading;
 
 public class GameManagerX : MonoBehaviour
 {
@@ -15,7 +16,6 @@ public class GameManagerX : MonoBehaviour
 
     public List<GameObject> targetPrefabs;
 
-    private int frame = 0;
     private int score;
     private int time;
     private float spawnRate = 1.5f;
@@ -26,21 +26,15 @@ public class GameManagerX : MonoBehaviour
     private float minValueY = -3.75f; //  y value of the center of the bottom-most square
     
     // Start the game, remove title screen, reset score, and adjust spawnRate based on difficulty button clicked
-    void Update()
-    {
-        frame++;
-        if (frame == 1000) {
-            UpdateTime();
-            frame = 0;
-        }
-    }
+
     public void StartGame(float difficulty)
     {
         spawnRate =  difficulty / 3;
         isGameActive = true;
         StartCoroutine(SpawnTarget());
+        StartCoroutine(Timer());
         score = 0;
-        time = 61;
+        time = 11;
         UpdateScore(0);
         titleScreen.SetActive(false);
         UpdateTime();
@@ -59,6 +53,14 @@ public class GameManagerX : MonoBehaviour
                 Instantiate(targetPrefabs[index], RandomSpawnPosition(), targetPrefabs[index].transform.rotation);
             }
             
+        }
+    }
+    IEnumerator Timer()
+    {
+        while (isGameActive)
+        {
+            yield return new WaitForSeconds(1);
+            UpdateTime();
         }
     }
 
